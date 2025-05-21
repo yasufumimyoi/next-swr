@@ -15,13 +15,13 @@ const badgeColors = {
 export function Menu() {
   const pathname = usePathname();
   const { data: badges, error, isLoading } = useSWR<MenuBadges>('menu-badges', fetchMenuBadges, {
-    refreshInterval: 30000, // 30秒ごとに更新
+    refreshInterval: 10000, // 10秒ごとに更新
   });
 
   const menuItems = [
-    { href: '/', label: 'ホーム', badge: badges?.home },
-    { href: '/dashboard', label: 'ダッシュボード', badge: badges?.dashboard },
-    { href: '/settings', label: '設定', badge: badges?.settings },
+    { href: '/', label: 'ホーム', badge: badges?.home ?? null },
+    { href: '/dashboard', label: 'ダッシュボード', badge: badges?.dashboard ?? null },
+    { href: '/settings', label: '設定', badge: badges?.settings ?? null },
   ];
 
   return (
@@ -41,7 +41,7 @@ export function Menu() {
                   <span
                     className={`${badgeColors[item.badge.color]} text-white text-xs px-2 py-1 rounded-full`}
                   >
-                    {item.badge.type === 'new' ? '新着' : item.badge.count}
+                    {item.badge.type === 'new' ? '新着' : item.badge.count > 0 ? item.badge.count : ''}
                   </span>
                 )}
               </Link>
